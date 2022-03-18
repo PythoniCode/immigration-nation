@@ -1,9 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
-body {
+body,
+div#__next {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  @apply flex flex-col w-screen min-h-screen overflow-x-hidden items-center text-center;
 }
 
 a {
@@ -13,4 +19,12 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.content-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, 240px);
+  align-items: center;
+  justify-content: center;
 }
