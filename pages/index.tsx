@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Real Stories. Real People." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col items-center w-4/5 my-8 p-4">
+      <main className="flex flex-col items-center w-full my-8 p-4">
         <h1 className="text-5xl font-bold">
           Welcome to <span className="text-blue-500">Immigration</span>{" "}
           <span className="text-red-500">Nation.</span>
