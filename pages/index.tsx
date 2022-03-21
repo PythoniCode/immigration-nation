@@ -1,7 +1,36 @@
+import fs from "fs";
+import matter from "gray-matter";
+
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import PostCard from "../components/PostCard";
+import Skeleton from "../components/Skeleton";
+import { PostMetadata } from "../types/Posts";
 
-const Home: NextPage = () => {
+export async function getStaticProps() {
+  const files = fs.readdirSync("posts");
+
+  const posts = files.map((name) => {
+    const slug = name.replace(".md", "");
+    const readFile = fs.readFileSync(`posts/${name}`, "utf-8");
+    const { data: frontmatter } = matter(readFile);
+
+    return {
+      slug,
+      frontmatter,
+    };
+  });
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}
+
+const Home: NextPage<{ posts: Array<PostMetadata> }> = ({ posts }) => {
   return (
     <>
       <Head>
@@ -15,35 +44,18 @@ const Home: NextPage = () => {
           <span className="text-red-500">Nation.</span>
         </h1>
         <h3 className="m-4 text-xl">
-          Read real stories about the difficult lives of immigrants from around
-          the world.
+          Real stories about the difficult lives of immigrants from around the
+          world.
         </h3>
-        <div className="content-grid w-full max-w-7xl">
-          <div className="flex flex-col w-full h-36 rounded gap-2 animate-pulse">
-            <div className="h-4 w-full bg-neutral-200"></div>
-            <div className="h-8 w-8 rounded-full bg-neutral-200"></div>
-            <div className="h-20 w-full bg-neutral-200"></div>
-          </div>
-          <div className="flex flex-col w-full h-36 rounded gap-2 animate-pulse">
-            <div className="h-4 w-full bg-neutral-200"></div>
-            <div className="h-8 w-8 rounded-full bg-neutral-200"></div>
-            <div className="h-20 w-full bg-neutral-200"></div>
-          </div>
-          <div className="flex flex-col w-full h-36 rounded gap-2 animate-pulse">
-            <div className="h-4 w-full bg-neutral-200"></div>
-            <div className="h-8 w-8 rounded-full bg-neutral-200"></div>
-            <div className="h-20 w-full bg-neutral-200"></div>
-          </div>
-          <div className="flex flex-col w-full h-36 rounded gap-2 animate-pulse">
-            <div className="h-4 w-full bg-neutral-200"></div>
-            <div className="h-8 w-8 rounded-full bg-neutral-200"></div>
-            <div className="h-20 w-full bg-neutral-200"></div>
-          </div>
-          <div className="flex flex-col w-full h-36 rounded gap-2 animate-pulse">
-            <div className="h-4 w-full bg-neutral-200"></div>
-            <div className="h-8 w-8 rounded-full bg-neutral-200"></div>
-            <div className="h-20 w-full bg-neutral-200"></div>
-          </div>
+        <div className="content-grid w-full max-w-7xl p-4">
+          {posts.map(({ slug, frontmatter }: PostMetadata) => (
+            <PostCard key={slug} slug={slug} frontmatter={frontmatter} />
+          ))}
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       </main>
     </>
